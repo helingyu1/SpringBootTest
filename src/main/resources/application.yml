@@ -1,0 +1,9 @@
+spring:
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 47.94.106.157:9300
+#      properties:
+#        path:
+#          logs: ./elasticsearch/log
+#          data: ./elasticsearch/data
