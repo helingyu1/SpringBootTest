@@ -9,6 +9,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.net.InetAddress;
@@ -84,6 +85,7 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
     }
 
     private Settings settings(){
+        logger.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" + clusterName);
         Settings settings = Settings.builder().put("cluster.name", clusterName)
                 .put("client.transport.sniff", true)
                 .build();
