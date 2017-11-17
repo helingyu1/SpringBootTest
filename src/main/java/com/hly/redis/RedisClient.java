@@ -72,11 +72,7 @@ public class RedisClient {
             // post 转 map
             Map<String, String> map = MapTools.objectToMap(post);
 
-            long id = getPostId();
-
-            String key = "post:" + id;
-            post.setId(id);
-            logger.info("为该文章生成id:" + id);
+            String key = "post:" + post.getId();
 
             // 存储post详细信息 hashmap
             trans.hmset(key, map);

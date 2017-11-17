@@ -22,7 +22,6 @@ public class PostController {
 
     @PostMapping(value = "/add")
     public String addPost(@RequestBody Post post){
-        System.out.println(post);
         String ret = postService.addPost(post);
         return ret;
     }

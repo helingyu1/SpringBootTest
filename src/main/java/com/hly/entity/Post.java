@@ -1,5 +1,7 @@
 package com.hly.entity;
 
+import com.hly.elasticsearch.ESearchTypeColumn;
+
 import java.util.Date;
 
 /**
@@ -21,18 +23,25 @@ public class Post {
 
     private Long id;
 
+    @ESearchTypeColumn
     private String title;
 
+    @ESearchTypeColumn
     private String username;
 
+    @ESearchTypeColumn
     private Date postDate;
 
+    @ESearchTypeColumn
     private Long views;
 
+    @ESearchTypeColumn
     private Long focus;
 
+    @ESearchTypeColumn(analyze = true)
     private String content;
 
+    @ESearchTypeColumn
     private String abstracts;
 
     public Long getId() {

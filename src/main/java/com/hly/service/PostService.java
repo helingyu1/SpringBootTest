@@ -1,9 +1,14 @@
 package com.hly.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.hly.elasticsearch.EsClient;
 import com.hly.entity.Post;
 import com.hly.redis.RedisClient;
 import org.apache.log4j.Logger;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.transport.TransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +29,14 @@ public class PostService {
     private static ExecutorService threadPool = new ThreadPoolExecutor(10,10,60, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>()
     ,namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
+
+    // redis 客户端
     @Autowired
     private RedisClient redisClient;
+
+    // es 客户端
+    @Autowired
+    private EsClient esClient;
 
     public String addPost(Post post){
 
@@ -34,6 +45,11 @@ public class PostService {
             // todo 根据content 生成摘要
             String abstracts = "test";
             post.setAbstracts(abstracts);
+
+            // todo 生成文章唯一id
+            long id = redisClient.getPostId();
+            logger.info("生成的id是:" + id);
+            post.setId(id);
 
             HandleEsTask esRunnable = new HandleEsTask(post);
 
@@ -69,6 +85,7 @@ public class PostService {
         public void run() {
             try {
                 redisClient.addPost(post);
+                logger.info("-----------插入redis已完成-------------");
             } catch(Exception e){
                 logger.error("入redis异常", e);
             }
@@ -88,6 +105,8 @@ public class PostService {
         @Override
         public void run() {
 
+            String ret = esClient.saveDoc("iblog","post", String.valueOf(post.getId()), post);
+            logger.info("-----------插入es已完成-------------");
         }
     }
 
