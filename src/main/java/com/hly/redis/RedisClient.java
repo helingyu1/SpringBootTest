@@ -1,9 +1,17 @@
 package com.hly.redis;
 
+import com.hly.entity.Post;
+import com.hly.util.MapTools;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Response;
+import redis.clients.jedis.Transaction;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author HHH
@@ -12,6 +20,8 @@ import redis.clients.jedis.JedisPool;
 
 @Component
 public class RedisClient {
+
+    private static final Logger logger = Logger.getLogger(RedisClient.class);
 
     @Autowired
     private JedisPool jedisPool;
@@ -34,5 +44,47 @@ public class RedisClient {
         }finally {
             jedis.close();
         }
+    }
+
+    /**
+     * 获取post 唯一id
+     * @return
+     * @throws Exception
+     */
+    public long getPostId() throws Exception{
+        Jedis jedis = null;
+        try{
+            jedis = jedisPool.getResource();
+            return jedis.incr("post:id");
+        } finally {
+            jedis.close();
+        }
+    }
+
+    public int addPost(Post post) throws Exception{
+        Jedis jedis = null;
+
+        try{
+
+            jedis = jedisPool.getResource();
+            Transaction trans = jedis.multi();
+
+            // post 转 map
+            Map<String, String> map = MapTools.objectToMap(post);
+
+            long id = getPostId();
+
+            String key = "post:" + id;
+            post.setId(id);
+            logger.info("为该文章生成id:" + id);
+
+            // 存储post详细信息 hashmap
+            trans.hmset(key, map);
+
+            trans.exec();
+        }finally {
+            jedis.close();
+        }
+        return 1;
     }
 }
