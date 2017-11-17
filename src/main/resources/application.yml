@@ -7,3 +7,11 @@ spring:
 #        path:
 #          logs: ./elasticsearch/log
 #          data: ./elasticsearch/data
+  jedis:
+    pool:
+      host: 47.94.106.157
+      port: 6379
+      config:
+        maxTotal: 100
+        maxIdle: 10
+        maxWaitMillis: 100000

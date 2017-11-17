@@ -87,7 +87,7 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
     private Settings settings(){
         logger.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" + clusterName);
         Settings settings = Settings.builder().put("cluster.name", clusterName)
-                .put("client.transport.sniff", true)
+//                .put("client.transport.sniff", true)
                 .build();
         client = new PreBuiltTransportClient(settings);
         return settings;
