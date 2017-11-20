@@ -69,23 +69,26 @@
                         </div>
                     </li>
                     <li class="divider"></li>
-                    <li v-for="item in PostList">
-                        <div class="content">
-                            <div class="row author">
-                                <a href="#" style="height: 30px; width: 30px;"><img class="img-circle" src="../img/messi.jpg"/></a>
-                                <a class="nickname">{{ item.nickname }}</a>
-                                <span class="needs_to_be_rendered">{{ getTimeago }}</span>
+                    <template v-for="item in PostList">
+                        <li>
+                            <div class="content">
+                                <div class="row author">
+                                    <a href="#" style="height: 30px; width: 30px;"><img class="img-circle" src="../img/messi.jpg"/></a>
+                                    <a class="nickname">{{ item.nickname }}</a>
+                                    <span class="needs_to_be_rendered" v-bind:datetime="item.date"></span>
+                                </div>
+                                <div class="title">{{ item.title }}</div>
+                                <div class="abstract">{{ item.abstract }}</div>
+                                <div class="meta">
+                                    <a href="#" class="collection-tag">java</a>
+                                    <a href="#" class="meta-info"><i class="icon-eye-open"></i> 269</a>
+                                    <a href="#" class="meta-info"><i class="icon-comments"> 999</i></a>
+                                    <span class="meta-info"><i class="icon-heart"></i>88</span>
+                                </div>
                             </div>
-                            <div class="title">{{ item.title }}</div>
-                            <div class="abstract">{{ item.abstract }}</div>
-                            <div class="meta">
-                                <a href="#" class="collection-tag">java</a>
-                                <a href="#" class="meta-info"><i class="icon-eye-open"></i> 269</a>
-                                <a href="#" class="meta-info"><i class="icon-comments"> 999</i></a>
-                                <span class="meta-info"><i class="icon-heart"></i>88</span>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                        <li class="divider"></li>
+                    </template>
                 </ul>
             </div>
         </div>
@@ -175,15 +178,7 @@
                 {'nickname':'Debby', 'date':'2016-11-12 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'}
 
             ]
-        },
-        computed: {
-            getTimeago: function () {
-                var date = this.date;
-                var timeagoInstance1 = timeago(Date.now()); // set the relative date here.
-                return timeagoInstance1.format(date, 'zh_CN');
-            }
         }
-
     })
 </script>
 </html>
