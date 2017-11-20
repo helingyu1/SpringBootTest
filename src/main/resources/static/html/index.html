@@ -56,7 +56,7 @@
                             <div class="row author">
                                 <a href="#" style="height: 30px; width: 30px;"><img class="img-circle" src="../img/messi.jpg"/></a>
                                 <a class="nickname">蛋花汤汤</a>
-                                <span class="needs_to_be_rendered" datetime="2017-11-20 15:00"></span>
+                                <time class="needs_to_be_rendered" datetime="2017-11-20 15:00"></time>
                             </div>
                             <div class="title">this is a title.</div>
                             <div class="abstract">this is an abstract.</div>
@@ -75,7 +75,8 @@
                                 <div class="row author">
                                     <a href="#" style="height: 30px; width: 30px;"><img class="img-circle" src="../img/messi.jpg"/></a>
                                     <a class="nickname">{{ item.nickname }}</a>
-                                    <span class="needs_to_be_rendered" v-bind:datetime="item.date"></span>
+                                    <!--<time class="needs_to_be_rendered" v-bind:datetime="{{ item.date }}"></time>-->
+                                    <time>{{ item.date|fn }}</time>
                                 </div>
                                 <div class="title">{{ item.title }}</div>
                                 <div class="abstract">{{ item.abstract }}</div>
@@ -155,30 +156,37 @@
     }
 </style>
 <script>
+
+
+
     var timeagoInstance = timeago();
+    alert(timeagoInstance);
     var nodes = document.querySelectorAll('.needs_to_be_rendered');
 
     timeagoInstance.render(nodes, 'zh_CN');
-    timeago.cancel();
 
     var app = new Vue({
         el: '#i-right',
         data: {
             message: 'Hello Vue!'
         }
-    })
+    });
+
+    Vue.filter('fn',function (value) {
+        return timeagoInstance.format(value, 'zh_CN');
+    });
 
     var app1 = new Vue({
         el : '#i-mid',
         data: {
             PostList:[
-                {'nickname':'Alen', 'date':'2017-11-20 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'},
+                {'nickname':'Alen', 'date':'2017-11-20 15:00:00', 'title':'java编程思想222', 'abstract':'这是一本java编程思想。。。'},
                 {'nickname':'Ben', 'date':'2017-10-20 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'},
                 {'nickname':'Cathy', 'date':'2017-11-18 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'},
                 {'nickname':'Debby', 'date':'2016-11-12 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'}
 
             ]
         }
-    })
+    });
 </script>
 </html>
