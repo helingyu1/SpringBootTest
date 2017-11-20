@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="../css/bootstrap/bootstrap.css"/>
+    <link rel="stylesheet" href="../css/font-awesome.css">
+
+    <script src="../js/jquery-3.2.1.js"></script>
+    <script src="../js/bootstrap/bootstrap.js"></script>
+    <script src="../js/timeago.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <!--<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <!--<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <!--<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+</head>
+<body>
+    <!--   顶部导航   -->
+    <nav id="i-nav" class="navbar navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">XXXXXX</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">发现</a></li>
+                    <li><a href="#">关注</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            消息
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">4</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">5</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--   end of 顶部导航   -->
+    <!--   核心内容   -->
+    <div id="i-content" class="container-fluid">
+        <div id="i-left" class="col-xs-3">1</div>
+        <div id="i-mid" class="col-xs-6">
+            <div id="i-post-list">
+                <ul>
+                    <li>
+                        <div class="content">
+                            <div class="row author">
+                                <a href="#" style="height: 30px; width: 30px;"><img class="img-circle" src="../img/messi.jpg"/></a>
+                                <a class="nickname">蛋花汤汤</a>
+                                <span class="needs_to_be_rendered" datetime="2017-11-20 15:00"></span>
+                            </div>
+                            <div class="title">this is a title.</div>
+                            <div class="abstract">this is an abstract.</div>
+                            <div class="meta">
+                                <a href="#" class="collection-tag">java</a>
+                                <a href="#" class="meta-info"><i class="icon-eye-open"></i> 269</a>
+                                <a href="#" class="meta-info"><i class="icon-comments"> 999</i></a>
+                                <span class="meta-info"><i class="icon-heart"></i>88</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li v-for="item in PostList">
+                        <div class="content">
+                            <div class="row author">
+                                <a href="#" style="height: 30px; width: 30px;"><img class="img-circle" src="../img/messi.jpg"/></a>
+                                <a class="nickname">{{ item.nickname }}</a>
+                                <span class="needs_to_be_rendered">{{ getTimeago }}</span>
+                            </div>
+                            <div class="title">{{ item.title }}</div>
+                            <div class="abstract">{{ item.abstract }}</div>
+                            <div class="meta">
+                                <a href="#" class="collection-tag">java</a>
+                                <a href="#" class="meta-info"><i class="icon-eye-open"></i> 269</a>
+                                <a href="#" class="meta-info"><i class="icon-comments"> 999</i></a>
+                                <span class="meta-info"><i class="icon-heart"></i>88</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="i-right" class="col-xs-3">{{ message }}</div>
+
+    </div>
+    <!-- end of 核心内容-->
+</body>
+<style>
+    body{
+        padding:50px;
+    }
+    a:link{
+        text-decoration:none;
+    }
+    a:visited{
+        text-decoration:none;
+    }
+    a:hover{
+        text-decoration:none;
+    }
+    a:active{
+        text-decoration:none;
+    }
+    #i-nav{
+        border-bottom: 1px solid gray;
+    }
+    /*#i-content,#i-left,#i-mid,#i-right{*/
+        /*border: 1px solid gray;*/
+    /*}*/
+    li{
+        list-style-type: none;
+    }
+    .collection-tag{
+        display: inline-block;
+        padding: 3px 6px;
+        margin-top: -1px;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 1;
+        vertical-align: middle;
+        color: #ea6f5a !important;
+        border: 1px solid rgba(236,97,73,.7);
+        border-radius: 3px;
+    }
+    .collection-tag:hover{
+        background-color: #ebebeb;
+    }
+    .meta-info{
+        color: #c0c0c0;
+    }
+    .title{
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.5;
+    }
+    .divider {
+        height: 1px;
+        margin: 9px 0;
+        overflow: hidden;
+        background-color: #e5e5e5;
+    }
+</style>
+<script>
+    var timeagoInstance = timeago();
+    var nodes = document.querySelectorAll('.needs_to_be_rendered');
+
+    timeagoInstance.render(nodes, 'zh_CN');
+    timeago.cancel();
+
+    var app = new Vue({
+        el: '#i-right',
+        data: {
+            message: 'Hello Vue!'
+        }
+    })
+
+    var app1 = new Vue({
+        el : '#i-mid',
+        data: {
+            PostList:[
+                {'nickname':'Alen', 'date':'2017-11-20 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'},
+                {'nickname':'Ben', 'date':'2017-10-20 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'},
+                {'nickname':'Cathy', 'date':'2017-11-18 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'},
+                {'nickname':'Debby', 'date':'2016-11-12 15:00:00', 'title':'java编程思想', 'abstract':'这是一本java编程思想。。。'}
+
+            ]
+        },
+        computed: {
+            getTimeago: function () {
+                var date = this.date;
+                var timeagoInstance1 = timeago(Date.now()); // set the relative date here.
+                return timeagoInstance1.format(date, 'zh_CN');
+            }
+        }
+
+    })
+</script>
+</html>
