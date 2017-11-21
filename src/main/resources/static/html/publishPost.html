@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>发布文章</title>
+
+    <link rel="stylesheet" href="../css/bootstrap/bootstrap.css"/>
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <link rel="stylesheet" href="../css/bootstrap/bootstrap-markdown.min.css">
+
+    <script src="../js/jquery-3.2.1.js"></script>
+    <script src="../js/bootstrap/bootstrap.js"></script>
+    <script src="../js/timeago.js"></script>
+    <script src="../js/bootstrap/bootstrap-markdown.js"></script>
+    <script src="../js/marked.min.js"></script>
+    <script src="../js/bootstrap/bootstrap-markdown.zh.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <textarea id="editor" style="color:#000"></textarea>
+</body>
+<script>
+    var $editor = $("#editor");
+    $editor.markdown({
+        height:300,
+        iconlibrary:'fa-3',
+        language:'zh',
+        savable: true,
+        onShow:function (e) {
+            e.parseContent("**aaaa**"
++"### 标题"
+            +"- 这里是列表文本")
+        },
+        onSave:function (e) {
+            alert("saving:" + e.getContent() + "...");
+        }
+    });
+
+//    var vue = new Vue({
+//       el:'#app',
+//       methods:{
+//            post:function (event) {
+//                var $editor = $("#editor");
+//                var content = $editor.getContent();
+//                alert(content);
+//            }
+//       }
+//    });
+</script>
+</html>
