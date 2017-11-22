@@ -31,37 +31,61 @@
 
         },
         onSave:function (e) {
-            alert("saving:" + e.getContent() + "...");
-            $.ajax({
-                url: 'http://127.0.0.1:8080/post/add',
-                type: 'POST',
-                crossDomain: true,
-                data: {
-                    titile : '题目',
+            var content = e.getContent();
+            var data= {
+                    title : '题目234234234',
                     username : '蛋花汤汤',
                     postDate : '2017',
                     views : 0,
                     focus : 0,
-                    content : '内容',
+                    content : content,
                     abstracts : '摘要'
-                },
-                dataType: 'json',
-                beforeSend: function (xhr) {
-                    alert('发送前');
-//                    alert(xhr);
-//                    xhr.setRequestHeader('Access-Control-Allow-Origin', '127.0.0.1');
-                    alert('设置成功');
-                },
-                success: function (data) {
-                    alert('成功');
-                },
-                error: function(){
-                    alert('错误');
-                }
-
-            });
+                };
+            var str = JSON.stringify(data);
+            alert(str);
+            makeCorsRequest(str);
         }
     });
+
+    function createCORSReqeust(method, url) {
+        var xhr = new XMLHttpRequest();
+        if("withCredentials" in xhr){
+            alert('in');
+            xhr.open(method, url, true);
+        }else if(typeof XDomaineRequest != "undefined"){
+
+            xhr = new XDomaineRequest();
+            xhr.open(methd, url);
+        }else{
+            xhr = null;
+        }
+        return xhr;
+    }
+
+    function makeCorsRequest(str) {
+
+        var url = "http://127.0.0.1:8080/post/add";
+
+        var xhr = createCORSReqeust('post', url);
+        if(!xhr){
+            alert(1);
+            alert('CORS not supported');
+            return;
+        }
+
+        xhr.onload = function () {
+            var text = xhr.responseText;
+            alert(text);
+        };
+
+        xhr.onerror = function () {
+            alert('Woops!Failed.')
+        };
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+        xhr.send(str);
+    }
 
 //    var vue = new Vue({
 //       el:'#app',
