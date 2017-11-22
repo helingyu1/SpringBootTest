@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/bootstrap/bootstrap.css"/>
     <link rel="stylesheet" href="../css/font-awesome.css">
     <link rel="stylesheet" href="../css/bootstrap/bootstrap-markdown.min.css">
+    <link rel="stylesheet" href="../css/showDetails.css">
 
     <script src="../js/jquery-3.2.1.js"></script>
     <script src="../js/bootstrap/bootstrap.js"></script>
@@ -17,16 +18,53 @@
     <script src="../js/vue.js"></script>
 </head>
 <body>
-    <div id="content">
-        <!--{{ content|fn }}-->
-        <span v-html="content"></span>
+    <div class="note">
+        <div class="post">
+            <div class="article">
+                <h1 class="title">这是标题</h1>
+                <!-- 作者区域 -->
+                <div class="author">
+                    <a class="avatar" href="#">
+                        <img src="../img/messi.jpg" alt="96">
+                    </a>
+                    <div class="info">
+                        <span class="name">
+                            <a href="#">蛋花汤汤</a>
+                        </span>
+                        <!-- 关注用户按钮 -->
+                        <a class="btn btn-success follow">
+                            <i class="icon-plus"></i>
+                            <span>关注</span>
+                        </a>
+                        <div class="meta">
+                            <span class="publish-time" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="最后编辑于 2017.11.21 18:12">2017.11.21 06:20*</span>
+                            <span class="wordage">字数 3984</span>
+                            <span class="views-count">评论 142</span>
+                            <span class="likes-count">喜欢 818</span>
+                            <span class="rewards-count">赞赏 7</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 文章内容 -->
+                <div id="content" class="show-content">
+                    <span v-html="content"></span>
+                </div>
+
+            </div>
+        </div>
     </div>
+    <!--<div id="content">-->
+        <!--&lt;!&ndash;{{ content|fn }}&ndash;&gt;-->
+        <!--<span v-html="content"></span>-->
+    <!--</div>-->
     <script>
         Vue.filter('fn',function (value) {
             return marked('# Marked in browser1111\n\nRendered by **marked**.');
         });
 
-        var html = marked('# Marked in browser1111\n\nRendered by **marked**.');
+        var html = marked("**aaaa**\r\n"
+            +"### 标题\r\n"
+            +"- 这里是列表文本\r\n");
         var data= {
             content : html
         }

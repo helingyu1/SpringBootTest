@@ -2,6 +2,7 @@
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <title>发布文章</title>
 
     <link rel="stylesheet" href="../css/bootstrap/bootstrap.css"/>
@@ -14,7 +15,7 @@
     <script src="../js/bootstrap/bootstrap-markdown.js"></script>
     <script src="../js/marked.min.js"></script>
     <script src="../js/bootstrap/bootstrap-markdown.zh.js"></script>
-    <script src="https://unpkg.com/vue"></script>
+    <script src="../js/vue.js"></script>
 </head>
 <body>
     <textarea id="editor" style="color:#000"></textarea>
@@ -27,12 +28,38 @@
         language:'zh',
         savable: true,
         onShow:function (e) {
-            e.parseContent("**aaaa**"
-+"### 标题"
-            +"- 这里是列表文本")
+
         },
         onSave:function (e) {
             alert("saving:" + e.getContent() + "...");
+            $.ajax({
+                url: 'http://127.0.0.1:8080/post/add',
+                type: 'POST',
+                crossDomain: true,
+                data: {
+                    titile : '题目',
+                    username : '蛋花汤汤',
+                    postDate : '2017',
+                    views : 0,
+                    focus : 0,
+                    content : '内容',
+                    abstracts : '摘要'
+                },
+                dataType: 'json',
+                beforeSend: function (xhr) {
+                    alert('发送前');
+//                    alert(xhr);
+//                    xhr.setRequestHeader('Access-Control-Allow-Origin', '127.0.0.1');
+                    alert('设置成功');
+                },
+                success: function (data) {
+                    alert('成功');
+                },
+                error: function(){
+                    alert('错误');
+                }
+
+            });
         }
     });
 
