@@ -1,8 +1,11 @@
 package com.hly.filter;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hly.detail.CustomUserDetail;
 import com.hly.entity.User;
+import com.hly.util.BodyHttpServletRequestWrapper;
+import com.hly.util.HttpHelper;
 import com.sun.org.apache.bcel.internal.util.BCELifier;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,6 +32,7 @@ import java.util.Date;
 /**
  * Created by YuQing on 2017/11/24.
  */
+
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter{
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -36,6 +41,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter{
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    ServletRequest requestMapper ;
+
     public JWTLoginFilter(AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -43,8 +50,13 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter{
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
         try{
-            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            requestMapper = new BodyHttpServletRequestWrapper(request);
+            String body = HttpHelper.getBodyString(requestMapper);
+
+            User user = JSON.parseObject(body, User.class);
+            //User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
             LOGGER.info("--------------------------------------" + user.getUsername() + "-----------------" +user.getPassword());
             LOGGER.info("-----------------------------------传上来的密码是：" + bCryptPasswordEncoder.encode(user.getPassword()));
@@ -55,6 +67,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter{
                             user.getPassword(),
                             new ArrayList<GrantedAuthority>())
                     );
+
+
         } catch (IOException e){
             LOGGER.error("认证异常", e);
             throw new RuntimeException(e);
@@ -76,8 +90,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter{
 
         LOGGER.info("------------------生成的token是-----------------------------" + token);
 
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("aaa", "Bearer " + token);
         LOGGER.info("------------reqeust----------------------------------:" + request);
-        chain.doFilter(request,response);
+        chain.doFilter(requestMapper,response);
     }
 }

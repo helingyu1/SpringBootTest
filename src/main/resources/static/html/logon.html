@@ -112,7 +112,9 @@
 
         xhr.onload = function () {
             alert("成功");
-            var header = xhr.getResponseHeader("Authorization");
+            var headers = xhr.getAllResponseHeaders();
+            alert(headers);
+            var header = xhr.getResponseHeader("aaa");
             alert(header);
             var text = xhr.responseText;
             if(text == 'ok'){
