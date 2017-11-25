@@ -1,7 +1,8 @@
 package com.hly.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -25,7 +26,7 @@ import java.util.Map;
 @Import(value = {RestTemplate.class})
 public class TestController {
 
-    private static final Logger logger = Logger.getLogger(TestController.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired
     RestTemplate restTemplate;
@@ -54,11 +55,11 @@ public class TestController {
         bulkRequest.add(request);
         BulkResponse bulkResponse = bulkRequest.execute().actionGet();
         if(bulkResponse.hasFailures()){
-            logger.error("批量创建索引错误...");
+            LOGGER.error("批量创建索引错误...");
         }
         client.close();
-        logger.info("批量创建索引成功");
-        logger.info(bulkResponse.toString());
+        LOGGER.info("批量创建索引成功");
+        LOGGER.info(bulkResponse.toString());
         return "ok";
     }
 }

@@ -1,6 +1,7 @@
 package com.hly.elasticsearch;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -20,7 +21,7 @@ import java.util.List;
 @Component
 public class EsClient {
 
-    private static final Logger logger = Logger.getLogger(EsClient.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired
     TransportClient client;
@@ -59,10 +60,10 @@ public class EsClient {
                 }
             }
             builder.endObject();
-            logger.info(builder.string());
+            LOGGER.info(builder.string());
             return builder;
         } catch (Exception e){
-            logger.error("获取object key-value失败，{}", e);
+            LOGGER.error("获取object key-value失败，{}", e);
         }
         return null;
     }

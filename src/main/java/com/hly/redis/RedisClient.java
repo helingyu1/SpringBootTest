@@ -2,7 +2,8 @@ package com.hly.redis;
 
 import com.hly.entity.Post;
 import com.hly.util.MapTools;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
@@ -21,7 +22,7 @@ import java.util.Map;
 @Component
 public class RedisClient {
 
-    private static final Logger logger = Logger.getLogger(RedisClient.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired
     private JedisPool jedisPool;

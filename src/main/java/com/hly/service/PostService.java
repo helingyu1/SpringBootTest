@@ -6,7 +6,8 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.hly.elasticsearch.EsClient;
 import com.hly.entity.Post;
 import com.hly.redis.RedisClient;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.concurrent.*;
 @Service
 public class PostService {
 
-    private static final Logger logger = Logger.getLogger(PostService.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("test-pool-%d").build();
 
@@ -48,7 +49,7 @@ public class PostService {
 
             // todo 生成文章唯一id
             long id = redisClient.getPostId();
-            logger.info("生成的id是:" + id);
+            LOGGER.info("生成的id是:" + id);
             post.setId(id);
 
             HandleEsTask esRunnable = new HandleEsTask(post);
@@ -64,7 +65,7 @@ public class PostService {
             threadPool.execute(redisRunnable);
 
         }catch(Exception e){
-            logger.error("异常：", e);
+            LOGGER.error("异常：", e);
             return "异常";
         }
 
@@ -85,9 +86,9 @@ public class PostService {
         public void run() {
             try {
                 redisClient.addPost(post);
-                logger.info("-----------插入redis已完成-------------");
+                LOGGER.info("-----------插入redis已完成-------------");
             } catch(Exception e){
-                logger.error("入redis异常", e);
+                LOGGER.error("入redis异常", e);
             }
         }
     }
@@ -106,7 +107,7 @@ public class PostService {
         public void run() {
 
             String ret = esClient.saveDoc("iblog","post", String.valueOf(post.getId()), post);
-            logger.info("-----------插入es已完成-------------");
+            LOGGER.info("-----------插入es已完成-------------");
         }
     }
 

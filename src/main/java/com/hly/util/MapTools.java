@@ -1,6 +1,7 @@
 package com.hly.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 public class MapTools {
 
-    private static final Logger logger = Logger.getLogger(MapTools.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static <T extends Object> void flushParams(Map<String, String> params, T t){
         if(params == null || t == null){
@@ -33,15 +34,15 @@ public class MapTools {
                     String name = fields[j].getName();
                     String value = null;
 
-                    if(logger.isDebugEnabled()) {
-                        logger.debug(MapTools.class + "attribute name : " + name);
+                    if(LOGGER.isDebugEnabled()) {
+                        LOGGER.debug(MapTools.class + "attribute name : " + name);
                     }
 
                     Method method = t.getClass().getMethod("get" + name.substring(0, 1).toUpperCase() + name.substring(1));
                     value = (String)method.invoke(t);
 
-                    if(logger.isDebugEnabled()) {
-                        logger.debug(MapTools.class + "attribute value : " + value);
+                    if(LOGGER.isDebugEnabled()) {
+                        LOGGER.debug(MapTools.class + "attribute value : " + value);
                     }
 
                     if(value != null){
@@ -50,10 +51,10 @@ public class MapTools {
 
                 }
             }catch(Exception e){
-                logger.error("pojo转map异常", e);
+                LOGGER.error("pojo转map异常", e);
             }
         }
-        logger.info(t.getClass().getName() + " 转成map为：" + params);
+        LOGGER.info(t.getClass().getName() + " 转成map为：" + params);
     }
 
     public static Map<String, String> objectToMap(Object obj){

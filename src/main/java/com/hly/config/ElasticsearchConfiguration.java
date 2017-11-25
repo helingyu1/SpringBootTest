@@ -1,6 +1,7 @@
 package com.hly.config;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -22,7 +23,7 @@ import java.net.UnknownHostException;
 @Configuration
 public class ElasticsearchConfiguration implements FactoryBean<TransportClient>, InitializingBean, DisposableBean {
 
-    private static final Logger logger = Logger.getLogger(ElasticsearchConfiguration.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
 
     @Value("${spring.data.elasticsearch.cluster-nodes}")
@@ -36,12 +37,12 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
     @Override
     public void destroy() throws Exception {
         try{
-            logger.info("Closing elasticsearch client");
+            LOGGER.info("Closing elasticsearch client");
             if(client != null) {
                 client.close();
             }
         } catch (final Exception e){
-            logger.error("Error closing ElasticSearch client: ", e);
+            LOGGER.error("Error closing ElasticSearch client: ", e);
         }
     }
 
@@ -62,7 +63,7 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        logger.info("------------------------------------------------ok");
+        LOGGER.info("------------------------------------------------ok");
         buildClient();
     }
 
@@ -77,15 +78,15 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
                     preBuiltTransportClient.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(address), port));
                 }
                 client = preBuiltTransportClient;
-                logger.info("------------------client:" + client);
+                LOGGER.info("------------------client:" + client);
             }
         } catch(UnknownHostException e){
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
     private Settings settings(){
-        logger.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" + clusterName);
+        LOGGER.info("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" + clusterName);
         Settings settings = Settings.builder().put("cluster.name", clusterName)
 //                .put("client.transport.sniff", true)
                 .build();

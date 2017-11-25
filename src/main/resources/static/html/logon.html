@@ -111,6 +111,9 @@
         }
 
         xhr.onload = function () {
+            alert("成功");
+            var header = xhr.getResponseHeader("Authorization");
+            alert(header);
             var text = xhr.responseText;
             if(text == 'ok'){
                 alert('您已成功登陆，即将跳转!!!!!!!!!!!!!!!!!!');
@@ -121,7 +124,7 @@
         xhr.onerror = function () {
             alert('Woops!Failed.')
         };
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
 
 
         xhr.send(str);
