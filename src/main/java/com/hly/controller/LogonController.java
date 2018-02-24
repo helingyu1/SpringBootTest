@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
  * @date 2017/11/24
  */
 
-@CrossOrigin(origins = "http://localhost:63342")
+//@CrossOrigin(origins = "http://localhost:63342")
+@CrossOrigin(origins = "*")
 @RestController
 public class LogonController {
 
